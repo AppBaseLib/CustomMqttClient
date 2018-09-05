@@ -1,7 +1,6 @@
 package com.abt.basic;
 
 import android.app.Application;
-import com.abt.basic.BuildConfig;
 
 /**
  * @描述： @基类application
