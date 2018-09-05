@@ -1,4 +1,4 @@
-package com.abt.mqtt;
+package com.abt.mqtt.base;
 
 import org.apache.commons.codec.binary.Base64;
 
