@@ -4,6 +4,7 @@ import android.util.Log;
 import com.abt.basic.logger.LogHelper;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * @author 黄卫旗
@@ -19,7 +20,11 @@ public class MqttActionListenerImpl implements IMqttActionListener {
      */
     @Override
     public void onSuccess(IMqttToken token) {
-        Log.i(TAG, "mqtt connect success ");
+        Log.i(TAG, "mqtt connect success!!");
+        ConnectEvent event = new ConnectEvent();
+        event.setToken(token);
+        event.setStatus(true);
+        EventBus.getDefault().post(event);
     }
 
     /**
@@ -29,6 +34,11 @@ public class MqttActionListenerImpl implements IMqttActionListener {
      */
     @Override
     public void onFailure(IMqttToken token, Throwable throwable) {
-        LogHelper.i(TAG, "mqtt connect failed ");
+        LogHelper.d(TAG, "token="+token+", throwable="+throwable);
+        LogHelper.i(TAG, "mqtt connect failed!!");
+        ConnectEvent event = new ConnectEvent();
+        event.setToken(token);
+        event.setStatus(false);
+        EventBus.getDefault().post(event);
     }
 }
