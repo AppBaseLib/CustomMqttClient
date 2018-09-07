@@ -1,0 +1,53 @@
+package com.abt.mqtt.event;
+
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+
+public class CallbackEvent {
+    private int type;
+    private String topic;
+    private MqttMessage message;
+    private IMqttDeliveryToken token;
+    private Throwable cause;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public MqttMessage getMessage() {
+        return message;
+    }
+
+    public void setMessage(MqttMessage message) {
+        this.message = message;
+    }
+
+    public IMqttDeliveryToken getToken() {
+        return token;
+    }
+
+    public void setToken(IMqttDeliveryToken token) {
+        this.token = token;
+    }
+
+    public Throwable getCause() {
+        return cause;
+    }
+
+    public void setCause(Throwable cause) {
+        this.cause = cause;
+    }
+
+}
