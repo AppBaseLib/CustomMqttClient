@@ -11,7 +11,8 @@ public class MqttConfig {
     public static final String PASSWORD = "password";
 
     public static final String CLIENT_ID = "CLIENT_ID"; // TODO
-    public static final String SERVER_URL = "tcp://10.0.261.159:1883"; // TODO
+    //public static final String SERVER_URL = "tcp://10.0.261.159:1883"; // 无SSL的URL
+    public static final String SERVER_URL = "ssl://commserver.qalink.cn:31638";
     public static final int HEART_BEAT_INTERVAL = 20; // 20秒
     public static final int TIME_OUT = 10; // 10秒
 
