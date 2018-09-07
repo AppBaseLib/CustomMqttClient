@@ -1,6 +1,8 @@
 package com.abt.mqtt.base;
 
 import com.abt.basic.logger.LogHelper;
+import com.abt.mqtt.config.Eventconfig;
+import com.abt.mqtt.event.CallbackEvent;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -27,7 +29,11 @@ public class MqttCallbackImpl implements MqttCallback {
         String detailLog = topic + ";qos:" + message.getQos() + ";retained:" + message.isRetained();
         LogHelper.i(TAG, "messageArrived:" + msgContent);
         LogHelper.i(TAG, detailLog);
-        EventBus.getDefault().post(message);
+        CallbackEvent event = new CallbackEvent();
+        event.setType(Eventconfig.MESSAGE_ARRIVED);
+        event.setTopic(topic);
+        event.setMessage(message);
+        EventBus.getDefault().post(event);
     }
 
     /**
@@ -37,6 +43,10 @@ public class MqttCallbackImpl implements MqttCallback {
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
         LogHelper.i(TAG, "deliveryComplete");
+        CallbackEvent event = new CallbackEvent();
+        event.setType(Eventconfig.DELIVERY_COMPLETE);
+        event.setToken(token);
+        EventBus.getDefault().post(event);
     }
 
     /**
@@ -47,5 +57,9 @@ public class MqttCallbackImpl implements MqttCallback {
     public void connectionLost(Throwable cause) {
         LogHelper.i(TAG, "connectionLost");
         // 失去连接，重连
+        CallbackEvent event = new CallbackEvent();
+        event.setType(Eventconfig.CONNECTION_LOST);
+        event.setCause(cause);
+        EventBus.getDefault().post(event);
     }
 }
