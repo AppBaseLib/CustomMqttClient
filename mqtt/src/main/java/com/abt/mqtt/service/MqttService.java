@@ -81,6 +81,21 @@ public class MqttService extends Service {
         boolean retained = true;
         iMqtt.publish(msg, topic, qos, retained);
     }
+    
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMqttCallback(CallbackEvent event) {
+        switch (event.getType()) {
+            case Eventconfig.MESSAGE_ARRIVED:
+                LogHelper.d(TAG, "MESSAGE_ARRIVED="+event.getMessage());
+                break;
+            case Eventconfig.DELIVERY_COMPLETE:
+                LogHelper.d(TAG, "MESSAGE_DELIVERY_COMPLETE");
+                break;
+            case Eventconfig.CONNECTION_LOST:
+                LogHelper.d(TAG, "MQTT_CONNECTION_LOST");
+                break;
+        }
+    }
 
 }
 
