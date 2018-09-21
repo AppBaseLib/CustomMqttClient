@@ -22,3 +22,10 @@
 4、[AndroidMqttWithSSL暂时没发现有啥用](https://github.com/widercode/AndroidMqttWithSSLSample)          
 
 
+## 爬坑
+
+        //FileInputStream fin = new FileInputStream(path);
+        InputStream fin = BasicApplication.getAppContext().getAssets().open(path);
+        
+1、[支付宝集成时的InvalidKeySpecException](https://www.cnblogs.com/littlepanpc/p/3989232.html)      
+2、
