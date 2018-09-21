@@ -2,14 +2,17 @@ package com.abt.mqtt.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-import com.abt.basic.BaseApplication;
+import com.abt.basic.BasicApplication;
 import com.abt.basic.logger.LogHelper;
-import com.jooan.mqtt.event.ConnectEvent;
-import com.jooan.mqtt.impl.IMqtt;
-import com.jooan.mqtt.impl.MqttImpl;
+import com.abt.mqtt.config.Eventconfig;
+import com.abt.mqtt.event.CallbackEvent;
+import com.abt.mqtt.event.ConnectEvent;
+import com.abt.mqtt.impl.IMqtt;
+import com.abt.mqtt.impl.MqttImpl;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -24,13 +27,20 @@ public class MqttService extends Service {
 
     private static final String TAG = MqttService.class.getSimpleName();
     private IMqtt iMqtt;
+    private MyBinder binder = new MyBinder();
+
+    public class MyBinder extends Binder {
+        public MqttService getService() {
+            return MqttService.this;
+        }
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         EventBus.getDefault().register(this);
         iMqtt = MqttImpl.getInstance();
-        iMqtt.init(BaseApplication.getAppContext());
+        iMqtt.init(BasicApplication.getAppContext());
     }
 
     @Override
@@ -43,13 +53,13 @@ public class MqttService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         LogHelper.d(TAG, "onBind");
-        return null;
+        return binder;
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
         LogHelper.d(TAG, "onUnbind");
-        return super.onUnbind(intent);
+        return false;
     }
 
     @Override
@@ -61,32 +71,32 @@ public class MqttService extends Service {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onConnectAction(ConnectEvent event) {
-        LogHelper.d(TAG, "onConnectAction, status="+event.getStatus());
+        LogHelper.d(TAG, "onConnectAction, status=" + event.getStatus());
         if (event.getStatus()) {
             subscribeTopic();
             publish();
         }
     }
 
-    private void subscribeTopic() {
+    public void subscribeTopic() {
         String[] topic = {"qaiot/mqtt/user/0TdHLPG-RMqWXg7q7sIXEA/"};
         int[] qos = {1};
         iMqtt.subscribe(topic, qos);
     }
 
-    private void publish() {
+    public void publish() {
         String msg = "hi camera, I am from app's msg!!";
         String topic = "qaiot/mqtt/0TdHLPG-RMqWXg7q7sIXEA";
         int qos = 1;
         boolean retained = true;
         iMqtt.publish(msg, topic, qos, retained);
     }
-    
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMqttCallback(CallbackEvent event) {
         switch (event.getType()) {
             case Eventconfig.MESSAGE_ARRIVED:
-                LogHelper.d(TAG, "MESSAGE_ARRIVED="+event.getMessage());
+                LogHelper.d(TAG, "MESSAGE_ARRIVED=" + event.getMsg());
                 break;
             case Eventconfig.DELIVERY_COMPLETE:
                 LogHelper.d(TAG, "MESSAGE_DELIVERY_COMPLETE");

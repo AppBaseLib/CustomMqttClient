@@ -32,7 +32,7 @@ public class MqttCallbackImpl implements MqttCallback {
         CallbackEvent event = new CallbackEvent();
         event.setType(Eventconfig.MESSAGE_ARRIVED);
         event.setTopic(topic);
-        event.setMessage(message);
+        event.setMsg(message);
         EventBus.getDefault().post(event);
     }
 

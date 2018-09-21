@@ -21,7 +21,7 @@
             android:priority="1000" >
             <intent-filter>
                 <!--根据你需要定义该名称,该名称也是服务启动名称-->
-                <action android:name="com.jooan.mqttservice" />
+                <action android:name="com.abt.mqttservice" />
                 <category android:name="android.intent.category.default" />
             </intent-filter>
         </service>

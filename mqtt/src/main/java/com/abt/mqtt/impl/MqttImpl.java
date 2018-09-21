@@ -2,6 +2,7 @@ package com.abt.mqtt.impl;
 
 import android.content.Context;
 
+import com.abt.basic.logger.LogHelper;
 import com.abt.mqtt.base.BaseMqttService;
 import com.abt.mqtt.base.SSLHandler;
 import com.abt.mqtt.config.MqttConfig;
