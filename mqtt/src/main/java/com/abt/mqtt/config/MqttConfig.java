@@ -7,8 +7,8 @@ package com.abt.mqtt.config;
  */
 public class MqttConfig {
 
-    public static final String USER_NAME = "admin";
-    public static final String PASSWORD = "password";
+    public static final String USER_NAME = "qaiot";
+    public static final String PASSWORD = "VeB3DVJcm1Xw5Ucu";
 
     public static final String CLIENT_ID = "CLIENT_ID"; // TODO
     //public static final String SERVER_URL = "tcp://10.0.261.159:1883"; // 无SSL的URL
