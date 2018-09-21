@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.abt.basic.logger.LogHelper;
 import com.abt.mqtt.R;
 import com.abt.mqtt.service.MqttService;
 
@@ -22,15 +23,18 @@ import butterknife.OnClick;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     private MqttService bindService = null;
     private boolean isBound = false;
 
     @OnClick({R.id.button1, R.id.button2}) void onClick(View v) {
         switch (v.getId()) {
             case R.id.button1:
+                LogHelper.d(TAG, "bindService");
                 bindService.publish();
                     break;
             case R.id.button2:
+                LogHelper.d(TAG, "subscribeTopic");
                 bindService.subscribeTopic();
                 break;
         }
@@ -43,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
             isBound = true;
             MqttService.MyBinder binder = (MqttService.MyBinder) service;
             bindService = binder.getService();
+            LogHelper.d(TAG, "onServiceConnected");
         }
 
         @Override
@@ -52,8 +57,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
+        LogHelper.d(TAG, "onCreate");
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         startService();
     }
 
@@ -61,11 +67,13 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, MqttService.class);
         this.startService(intent);
         this.bindService(intent, mConn, BIND_AUTO_CREATE);
+        LogHelper.d(TAG, "bindService");
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
         this.unbindService(mConn);
+        LogHelper.d(TAG, "unbindService");
     }
 }

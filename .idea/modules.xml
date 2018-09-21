@@ -5,10 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/CustomMqttClient.iml" filepath="$PROJECT_DIR$/.idea/CustomMqttClient.iml" />
       <module fileurl="file://$PROJECT_DIR$/CustomMqttClient.iml" filepath="$PROJECT_DIR$/CustomMqttClient.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/basic/basic.iml" filepath="$PROJECT_DIR$/basic/basic.iml" />
-      <module fileurl="file://$PROJECT_DIR$/basic/basic.iml" filepath="$PROJECT_DIR$/basic/basic.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mqtt/mqtt.iml" filepath="$PROJECT_DIR$/mqtt/mqtt.iml" />
       <module fileurl="file://$PROJECT_DIR$/mqtt/mqtt.iml" filepath="$PROJECT_DIR$/mqtt/mqtt.iml" />
     </modules>
   </component>

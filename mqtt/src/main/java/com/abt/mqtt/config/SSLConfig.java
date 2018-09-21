@@ -7,8 +7,14 @@ package com.abt.mqtt.config;
  */
 public class SSLConfig {
 
-    public static final String CA_PATH = "file:///android_asset/rootCA.crt";
-    public static final String CRT_PATH = "file:///android_asset/commserver.qalink.cn-client.crt";
-    public static final String KEY_PATH = "file:///android_asset/commserver.qalink.cn-client.pem";
+    //"file:///android_asset/rootCA.crt";
+    public static final String CA_PATH = "rootCA.crt";
+
+    //"file:///android_asset/commserver.qalink.cn-client.crt";
+    public static final String CRT_PATH = "commserver.qalink.cn-client.crt";
+
+    //"file:///android_asset/commserver.qalink.cn-client.pem";
+    public static final String KEY_PATH = "commserver.qalink.cn-client.pem";
+
     public static final String PASSWORD = "VeB3DVJcm1Xw5Ucu";
 }
