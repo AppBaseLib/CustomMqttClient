@@ -132,7 +132,7 @@ public class MqttImpl implements IMqtt {
      */
     @Override
     public void publish(String msg, String topic, int qos, boolean retained) {
-        LogHelper.d(TAG, "publish, msg="+msg+", topic="+topic+", qos="+qos+", retained="+retained);
+        LogHelper.d(TAG, "Publish msg="+msg+", topic="+topic+", qos="+qos+", retained="+retained);
         mMqttService.publish(msg, topic, qos, retained);
     }
 

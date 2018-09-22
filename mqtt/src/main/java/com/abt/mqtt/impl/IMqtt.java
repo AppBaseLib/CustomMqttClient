@@ -31,6 +31,6 @@ public interface IMqtt {
     /**
      * 发布消息
      */
-    void publish(String msg, String topic, int qos, boolean retained);
+    void publish(String jsonMsg, String topic, int qos, boolean retained);
 
 }

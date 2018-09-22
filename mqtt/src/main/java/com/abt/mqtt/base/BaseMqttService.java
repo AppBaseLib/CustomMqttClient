@@ -5,11 +5,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.abt.basic.logger.LogHelper;
+import com.abt.mqtt.config.Eventconfig;
+import com.abt.mqtt.event.CallbackEvent;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.greenrobot.eventbus.EventBus;
 
 import javax.net.ssl.SSLSocketFactory;
 
@@ -206,6 +209,9 @@ public class BaseMqttService {
             // 订阅topic话题
             LogHelper.i(TAG, "execute subscribe -- qos = " + qos.toString());
             client.subscribe(topics, qos);
+            CallbackEvent event = new CallbackEvent();
+            event.setType(Eventconfig.DELIVERY_COMPLETE);
+            EventBus.getDefault().post(event);
         } catch (Exception e) {
             LogHelper.e(TAG, e.toString());
         }

@@ -10,8 +10,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.abt.basic.logger.LogHelper;
+import com.abt.basic.util.ToastUtil;
 import com.abt.mqtt.R;
+import com.abt.mqtt.config.Eventconfig;
+import com.abt.mqtt.event.CallbackEvent;
+import com.abt.mqtt.event.ConnectEvent;
 import com.abt.mqtt.service.MqttService;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -27,15 +35,21 @@ public class MainActivity extends AppCompatActivity {
     private MqttService bindService = null;
     private boolean isBound = false;
 
-    @OnClick({R.id.button1, R.id.button2}) void onClick(View v) {
+    @OnClick({R.id.subscribe, R.id.publish}) void onClick(View v) {
         switch (v.getId()) {
-            case R.id.button1:
-                LogHelper.d(TAG, "bindService");
-                bindService.publish();
-                    break;
-            case R.id.button2:
-                LogHelper.d(TAG, "subscribeTopic");
-                bindService.subscribeTopic();
+            case R.id.subscribe:
+                LogHelper.d(TAG, "subscribe topic");
+                String[] topics = {"qaiot/mqtt/user/0TdHLPG-RMqWXg7q7sIXEA/"};
+                int[] qoss = {1};
+                bindService.subscribe(topics, qoss);
+                break;
+            case R.id.publish:
+                LogHelper.d(TAG, "publish btn click");
+                String jsonMsg = "{\"type\":hi camera, I am from app's msg!!}";
+                String topic = "qaiot/mqtt/0TdHLPG-RMqWXg7q7sIXEA";
+                int qos = 1;
+                boolean retained = true;
+                bindService.publish(jsonMsg, topic, qos, retained);
                 break;
         }
     }
@@ -59,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         LogHelper.d(TAG, "onCreate");
         setContentView(R.layout.activity_main);
+        EventBus.getDefault().register(this);
         ButterKnife.bind(this);
         startService();
     }
@@ -74,6 +89,35 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         this.unbindService(mConn);
+        EventBus.getDefault().unregister(this);
         LogHelper.d(TAG, "unbindService");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onConnectAction(ConnectEvent event) {
+        LogHelper.d(TAG, "onConnectAction, status=" + event.getStatus());
+        if (event.getStatus()) {
+            ToastUtil.show("Connection Success!!");
+        } else {
+            ToastUtil.show("Connection Failed!!");
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMqttCallback(CallbackEvent event) {
+        switch (event.getType()) {
+            case Eventconfig.MESSAGE_ARRIVED:
+                ToastUtil.show("MESSAGE_ARRIVED!!");
+                LogHelper.d(TAG, "MESSAGE_ARRIVED=" + event.getMsg());
+                break;
+            case Eventconfig.DELIVERY_COMPLETE:
+                ToastUtil.show("MESSAGE_DELIVERY_COMPLETE!!");
+                LogHelper.d(TAG, "MESSAGE_DELIVERY_COMPLETE");
+                break;
+            case Eventconfig.CONNECTION_LOST:
+                ToastUtil.show("MQTT_CONNECTION_LOST!!");
+                LogHelper.d(TAG, "MQTT_CONNECTION_LOST");
+                break;
+        }
     }
 }
